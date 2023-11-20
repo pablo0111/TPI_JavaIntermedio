@@ -20,9 +20,10 @@ public class Main {
 //        emp.setUsuario(user1);
 //        emp.persistir();
 
-//        List<ServicioEspacialidad> resultadoList = new ArrayList<ServicioEspacialidad>();
-//        resultadoList = ServicioEspacialidad.obtenerServiciosActivos();
-
+        List<ServicioEspacialidad> resultadoList = new ArrayList<ServicioEspacialidad>();
+        resultadoList = ServicioEspacialidad.obtenerServiciosActivos();
+        resultadoList.stream().forEach((dato) -> System.out.println("Seleccion: "+dato.getIndex()+" Servicio: " + dato.getNombre() ) );
+        System.out.println("listo");
 //        Cliente uncliente = new Cliente(); //PRUEBA BAJA OK
 //        uncliente.setCUIT("12123123121");
 //        uncliente.darDeBaja();
