@@ -3,6 +3,7 @@ package Ticketera;
 import Ticketera.Entidades.*;
 import Ticketera.Servicios.MiScanner;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +11,8 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Bienvenido a la Ticketera");
 
-        String[] args2 = {"pedro","1234"}; //RRHH -2
-//        String[] args2 = {"patricia","1234"}; //COMERCIAL - 5
+//        String[] args2 = {"pedro","1234"}; //RRHH -2
+        String[] args2 = {"patricia","1234"}; //COMERCIAL - 5
 //        String[] args2 = {"juan","1234"}; //TECNICO -3
 //        String[] args2 = {"eva","1234"}; //OPERADORMDA -4
         Usuario user1 = new Usuario(args2[0], args2[1]);
@@ -202,7 +203,7 @@ public class Main {
                         clienteNuevo.persistir();
                         System.out.println("Desea agregar servicios al cliente: S-Si N-No");
                         char sino = MiScanner.leerCaracter(new char[]{'S','s', 'N','n'});
-                        if (sino == 'S') {
+                        if (sino == 'S' || sino=='s') {
                             //agregar Servicios-Especialidades
                         }
                         //PERSISTIR CLIENTE
@@ -210,15 +211,99 @@ public class Main {
                         break;
                     }
                     case '2': {
-
+                        Cliente clienteNuevo = new Cliente();
+                        System.out.println("Ingresar CUIT (Solo numeros, sin -)");
+                        clienteNuevo.setCUIT(MiScanner.leerTexto());
+                        clienteNuevo.recuperar();
+                        System.out.println(clienteNuevo.toString());
+                        System.out.println("¿Confirma dar de baja el cliente?  S-Si N-No");
+                        char sino = MiScanner.leerCaracter(new char[]{'S','s', 'N','n'});
+                        if (sino == 'S' || sino=='s') {
+                            clienteNuevo.darDeBaja();
+                        }
+                        System.out.println("Proceso de baja OK");
                         break;
                     }
                     case '3': {
+                        Cliente clienteNuevo = new Cliente();
+                        System.out.println("Ingresar CUIT (Solo numeros, sin -)");
+                        clienteNuevo.setCUIT(MiScanner.leerTexto());
+                        clienteNuevo.recuperar();
+                        System.out.println(clienteNuevo.toString());
+                        System.out.println("¿Desea cambiar el mail?  S-Si N-No");
+                        char sino = MiScanner.leerCaracter(new char[]{'S','s', 'N','n'});
+                        if (sino == 'S' || sino=='s') {
+                            clienteNuevo.setMailContacto(MiScanner.leerTexto());
+                        }
+                        System.out.println("¿Desea cambiar la Razon Social?  S-Si N-No");
+                        sino = MiScanner.leerCaracter(new char[]{'S','s', 'N','n'});
+                        if (sino == 'S' || sino=='s') {
+                            clienteNuevo.setRazonSocial(MiScanner.leerTexto());
+                        }
+                        System.out.println("¿Confirma los cambios?  S-Si N-No");
+                        System.out.println(clienteNuevo.toString());
+                        sino = MiScanner.leerCaracter(new char[]{'S','s', 'N','n'});
+                        if (sino == 'S' || sino=='s') {
+                            clienteNuevo.actualizar();
+                            System.out.println("Proceso de modificaciones completado");
+                        } else System.out.println("Proceso de modificaciones CANCELADO");
 
                         break;
                     }
                     case '4': {
+                        Cliente cliente = new Cliente();
+                        System.out.println("Ingresar CUIT (Solo numeros, sin -)");
+                        cliente.setCUIT(MiScanner.leerTexto());
+                        cliente.recuperar();
+                        System.out.println(cliente.toString() +"\n");
+                        System.out.println("Desea agregar servicios al cliente: S-Si N-No");
+                        char sino = MiScanner.leerCaracter(new char[]{'S','s', 'N','n'});
+                        if (sino == 'S' || sino=='s') {
+                            //listo todas las especialidades
+                            System.out.println("Servicios actuales");
+                            ServicioEspacialidad.obtenerServiciosActivosCliente(cliente.getCUIT()).stream().forEach((dato) -> System.out.println("Seleccion: " + dato.getIndex() + " Servicio: " + dato.getNombre()));
+                            System.out.println();
+                            boolean continuar = true;
+                            while (continuar) {
+                                System.out.println("Servicios disponibles");
+                                ServicioEspacialidad.obtenerServiciosActivos().stream().filter((dato)-> !cliente.tieneServicio(dato)).forEach((dato)-> System.out.println("Seleccion: " + dato.getIndex() + " Servicio: " + dato.getNombre()));
 
+                                int seleccion =  MiScanner.leerInt();
+                                cliente.agregarServicio(new ServicioEspacialidad(ServicioEspacialidad.obtenerServiciosActivos().stream().filter((dato)-> dato.getIndex()==seleccion).findFirst().get()));
+                                System.out.println("¿Desea agregar otro servicios?  S-Si N-No");
+                                char sino2 = MiScanner.leerCaracter(new char[]{'S','s', 'N','n'});
+                                if (sino2 == 'n' || sino2 == 'N' ) continuar = false;
+                            }
+                            cliente.actualizar();
+                            System.out.println("Edicion completada");
+                        }
+                        System.out.println("Desea eliminar servicios al cliente: S-Si N-No");
+                        sino = MiScanner.leerCaracter(new char[]{'S','s', 'N','n'});
+                        if (sino == 'S' || sino=='s') {
+                            //listo todas las especialidades
+                            System.out.println("Servicios actuales");
+                            ServicioEspacialidad.obtenerServiciosActivosCliente(cliente.getCUIT()).stream().forEach((dato) -> System.out.println("Seleccion: " + dato.getIndex() + " Servicio: " + dato.getNombre()));
+                            System.out.println();
+                            boolean continuar = true;
+                            while (continuar) {
+                                System.out.println("Elejir servicio a elminar: ");
+                                int seleccion = MiScanner.leerInt();
+                                cliente.elimnarServicio(new ServicioEspacialidad(ServicioEspacialidad.obtenerServiciosActivos().stream().filter((dato) -> dato.getIndex() == seleccion).findFirst().get()));
+                                System.out.println("¿Desea eliminar otra especialidad?  S-Si N-No");
+                                char sino2 = MiScanner.leerCaracter(new char[]{'S', 's', 'N', 'n'});
+                                if (sino2 == 'n' || sino2 == 'N') continuar = false;
+                            }
+                            cliente.actualizar();
+                            System.out.println("Edicion completada");
+                        }
+                        break;
+                    }
+                    case '5': {
+                        ServicioEspacialidad unServicio = new ServicioEspacialidad();
+                        System.out.println("Ingresar nombre del servicio: ");
+                        unServicio.setNombre(MiScanner.leerTexto());
+                        unServicio.persistir();
+                        System.out.println("Servicio Agregado con exito");
                         break;
                     }
                 }

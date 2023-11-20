@@ -127,6 +127,8 @@ public class ServicioEspecialidadDBServicios extends BaseDeDatosServicios{
         return listaServiciosEspecialidad;
 
     }
+
+
     public List<String> readAllLinesTecnicoEspecialidad(String _legajo)throws Exception {
         List<String> listaServiciosEspecialidad;
         ResultSet reader;
@@ -158,5 +160,90 @@ public class ServicioEspecialidadDBServicios extends BaseDeDatosServicios{
         }
         return listaServiciosEspecialidad;
 
+    }
+
+
+    public List<String> readAllLinesClienteEspecialidad(String _cuit)throws Exception {
+        List<String> listaServiciosEspecialidad;
+        ResultSet reader;
+
+        try
+        {
+            this.conectar();
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT l.clienteCUIT_id, l.servicio_especialidad_id, p.Descripcion FROM tpi_argprog2.servicios_contratados l left join tpi_argprog2.servicios_especialidades p on l.servicio_especialidad_id = p.idservicios_especialidades \n" +
+                    "where l.clienteCUIT_id='"+_cuit + "'");
+            listaServiciosEspecialidad = new ArrayList();
+            reader = st.executeQuery();
+            while (reader.next())
+            {
+                String objSerEsp = new String();
+                objSerEsp= objSerEsp.concat(reader.getString("clienteCUIT_id"));
+                objSerEsp= objSerEsp.concat(",");
+                objSerEsp= objSerEsp.concat(reader.getString("servicio_especialidad_id"));
+                objSerEsp= objSerEsp.concat(",");
+                objSerEsp= objSerEsp.concat(reader.getString("Descripcion"));
+
+                listaServiciosEspecialidad.add(objSerEsp);
+            }
+        } catch (Exception e)
+        {
+            throw e;
+        }
+        finally
+        {
+            this.cerrar();
+        }
+        return listaServiciosEspecialidad;
+
+    }
+
+    public void agregarEspecilidadCliente(ServicioEspacialidad _serEsp, String cuit) throws Exception {
+        try {
+
+            this.conectar();
+
+            PreparedStatement st = this.getConexion().prepareStatement("INSERT INTO `tpi_argprog2`.`servicios_contratados`\n" +
+                    "(`clienteCUIT_id`,\n" +
+                    "`servicio_especialidad_id`)\n" +
+                    "VALUES (?,?)");
+            st.setLong(1, Long.parseLong(cuit));
+            st.setInt(2, _serEsp.getIndex());
+
+
+            st.executeUpdate();
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            this.cerrar();
+        }
+
+    }
+
+    public void eliminarEspecilidadCliente(ServicioEspacialidad _serEsp, String cuit) throws Exception{
+        try {
+
+            this.conectar();
+
+            PreparedStatement st = this.getConexion().prepareStatement("DELETE FROM `tpi_argprog2`.`servicios_contratados`\n" +
+                    "WHERE `clienteCUIT_id` = ?\n" +
+                    " AND `servicio_especialidad_id` = ?" );
+            st.setLong(1, Long.parseLong(cuit));
+            st.setInt(2, _serEsp.getIndex());
+
+
+            st.executeUpdate();
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            this.cerrar();
+        }
     }
 }

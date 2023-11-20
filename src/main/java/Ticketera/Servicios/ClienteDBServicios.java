@@ -65,16 +65,19 @@ public class ClienteDBServicios extends BaseDeDatosServicios{
 
     }
 
-    public String obtenerCliente(String cuit) throws Exception {
+    public String obtenerCliente(String dato, int formaRecupero) throws Exception {
 
         ResultSet reader;
         String cliente = new String();
 
         try
-        {
+        {   String sqlStatement= new String();
+            if (formaRecupero==0) sqlStatement ="select * from cliente where idClienteCUIT ='"+dato+"'";
+            else sqlStatement="select * from cliente where RazonSocial ='"+dato+"'";
             this.conectar();
-            PreparedStatement st = this.getConexion().prepareStatement("select * from cliente where idClienteCUIT ='"+cuit+"'");
+            PreparedStatement st = this.getConexion().prepareStatement(sqlStatement);
             reader = st.executeQuery();
+            reader.next();
             cliente= cliente.concat(reader.getString("idClienteCUIT"));
             cliente= cliente.concat(",");
             cliente= cliente.concat(reader.getString("RazonSocial"));
@@ -92,6 +95,31 @@ public class ClienteDBServicios extends BaseDeDatosServicios{
         }
         //DEVOLVER CLIENTE
         return cliente;
+    }
+
+    public void actualizarCliente(Cliente _cliente)throws Exception {
+
+        try {
+            this.conectar();
+
+            PreparedStatement st = this.getConexion().prepareStatement("UPDATE `tpi_argprog2`.`cliente`\n" +
+                    "SET\n" +
+                    "RazonSocial = '"+ _cliente.getRazonSocial() +"', " +
+                    "eMail= '" + _cliente.getMailContacto() + "'" +
+                    " WHERE `idClienteCUIT` = ?");
+            st.setLong(1,Long.parseLong(_cliente.getCUIT()));
+            st.executeUpdate();
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            this.cerrar();
+        }
+
+
     }
 
 }

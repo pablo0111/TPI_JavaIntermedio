@@ -8,6 +8,10 @@ import java.util.List;
 
 @Data
 public class ServicioEspacialidad {
+
+    public ServicioEspacialidad() {
+    }
+
     private String nombre;
     private int index;
 
@@ -61,10 +65,36 @@ public class ServicioEspacialidad {
 
         return resultadoList;
     }
+
+    public static List <ServicioEspacialidad> obtenerServiciosActivosCliente(String _cuit){
+        ServicioEspecialidadDBServicios accesoDB = new ServicioEspecialidadDBServicios();
+        List <ServicioEspacialidad> resultadoList = new ArrayList<ServicioEspacialidad>();
+        try {
+            List<String> lecturaDB = accesoDB.readAllLinesClienteEspecialidad(_cuit);
+            if (lecturaDB.size()!=0)
+                for (String linea : lecturaDB) {
+                    resultadoList.add(new ServicioEspacialidad (Integer.parseInt(linea.split(",")[1]),linea.split(",")[2])) ;
+                }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return resultadoList;
+    }
     public static void eliminarServicioTecnico(String legajo, ServicioEspacialidad serv){
         ServicioEspecialidadDBServicios accesoDB = new ServicioEspecialidadDBServicios();
         try {
             accesoDB.eliminarEspecilidadTecnico(serv, legajo);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    public static void eliminarServicioCliente(String cuit, ServicioEspacialidad serv){
+        ServicioEspecialidadDBServicios accesoDB = new ServicioEspecialidadDBServicios();
+        try {
+            accesoDB.eliminarEspecilidadCliente(serv, cuit);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -97,10 +127,46 @@ public class ServicioEspacialidad {
 
     }
 
+    public static void actualizarServicioCliente(String cuit, List<ServicioEspacialidad> servicioscontratados) {
+        List<ServicioEspacialidad> listaEnDB = new ArrayList<>();
+        listaEnDB.addAll(obtenerServiciosActivosCliente(cuit));
+        if (listaEnDB.size() == 0 && servicioscontratados.size() != 0) {
+            servicioscontratados.stream().forEach((dato) -> dato.persistirEspecialidadCliente(cuit)); //guardo sus especialidades
+        } else if (listaEnDB.size() != 0 && servicioscontratados.size() != 0) {
+            //elimino los que sobran
+            listaEnDB.stream().forEach((itemDB) ->
+            {
+                if (!servicioscontratados.stream().anyMatch((itemAct) -> itemDB.getIndex() == itemAct.getIndex())) {
+                    ServicioEspacialidad.eliminarServicioCliente(cuit, itemDB);
+                }
+            });
+            listaEnDB.clear();
+            listaEnDB.addAll(obtenerServiciosActivosCliente(cuit));
+            //agrego los que falten
+            servicioscontratados.stream().forEach((item)->
+                    {
+                        if (!listaEnDB.stream().anyMatch((itemAct) -> item.getIndex() == itemAct.getIndex()))
+                            item.persistirEspecialidadCliente(cuit);
+                    }
+            );
+        } else if (listaEnDB.size() != 0 && servicioscontratados.size()== 0)  listaEnDB.stream().forEach((item)-> ServicioEspacialidad.eliminarServicioCliente(cuit,item));
+
+    }
+
     protected void persistirEspecialidadTecnico(String legajo){
         ServicioEspecialidadDBServicios accesoDB = new ServicioEspecialidadDBServicios();
         try {
             accesoDB.agregarEspecilidadTecnico(this, legajo);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    protected void persistirEspecialidadCliente(String cuit){
+        ServicioEspecialidadDBServicios accesoDB = new ServicioEspecialidadDBServicios();
+        try {
+            accesoDB.agregarEspecilidadCliente(this, cuit);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
