@@ -1,17 +1,14 @@
 package Ticketera.Entidades;
 
-public class RRHH extends Empleado{
-
-
-    public RRHH() {
-        setRol(Roles.RRHH);
+public class OperadorMDA extends  Empleado{
+    public OperadorMDA() {
+        setRol(Roles.OPERADORMDA);
     }
-    public RRHH(Empleado empleado) {
-        setRol(Roles.RRHH);
+    public OperadorMDA(Empleado empleado) {
+        setRol(Roles.OPERADORMDA);
         setNombre(empleado.getNombre());
         setMail(empleado.getMail());
         setTelefono(empleado.getTelefono());
         setTipoPreferido(empleado.getTipoPreferido());
     }
-
 }

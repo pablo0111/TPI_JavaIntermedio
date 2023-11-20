@@ -1,6 +1,8 @@
 package Ticketera.Entidades;
 
+import lombok.AccessLevel;
 import lombok.Data;
+
 
 @Data
 public class Usuario {

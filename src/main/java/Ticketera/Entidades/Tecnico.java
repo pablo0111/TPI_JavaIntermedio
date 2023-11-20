@@ -11,5 +11,9 @@ public class Tecnico extends Empleado  {
         especialidades = new ArrayList<ServicioEspacialidad>();
     }
 
+    public void agregarEspecilidad(ServicioEspacialidad _serv) {
+
+
+    }
 
 }

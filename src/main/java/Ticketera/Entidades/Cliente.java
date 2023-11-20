@@ -18,4 +18,12 @@ public class Cliente {
         }
 
     }
+    public void darDeBaja(){
+        ClienteDBServicios accesoDB = new ClienteDBServicios();
+        try {
+            accesoDB.bajaCliente(getCUIT());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

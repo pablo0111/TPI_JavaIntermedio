@@ -1,10 +1,10 @@
 package Ticketera.Entidades;
 
-public enum TIPOCONTACTO {
+public enum TipoContacto {
     WHATSAPP,
     EMAIL,
     TELEFONO;
-    static public TIPOCONTACTO getPorIndice(int i){
+    static public TipoContacto getPorIndice(int i){
         if (i==1) {
             return WHATSAPP;
         } else if (i==2) {

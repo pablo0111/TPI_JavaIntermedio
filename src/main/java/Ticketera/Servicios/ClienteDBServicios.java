@@ -19,7 +19,6 @@ public class ClienteDBServicios extends BaseDeDatosServicios{
     public  void persistirCliente(Cliente _cliente) throws Exception {
         try {
 
-            String [] pronostico;
             this.conectar();
 
             PreparedStatement st = this.getConexion().prepareStatement("INSERT INTO `tpi_argprog2`.`cliente`\n" +
@@ -43,6 +42,29 @@ public class ClienteDBServicios extends BaseDeDatosServicios{
         }
 
     }
+    public void bajaCliente(String _cuit) throws Exception{
+        try {
+
+
+            this.conectar();
+
+            PreparedStatement st = this.getConexion().prepareStatement("UPDATE `tpi_argprog2`.`cliente`\n" +
+                    "SET\n" +
+                    "estado = 0\n"+
+                    "WHERE `idClienteCUIT` = "+ _cuit+";");
+            st.executeUpdate();
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            this.cerrar();
+        }
+
+    }
+
     public String obtenerCliente(String cuit) throws Exception {
 
         ResultSet reader;

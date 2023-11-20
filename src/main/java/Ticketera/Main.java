@@ -3,25 +3,33 @@ package Ticketera;
 import Ticketera.Entidades.*;
 import Ticketera.Servicios.MiScanner;
 
-import java.sql.SQLOutput;
-
-import static Ticketera.Entidades.Roles.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Hello world!");
+//
+        Empleado emp = new Tecnico();
+//        emp.setNombre("Roberto");
+//        emp.setMail("roberto@mail.com");
+//        emp.setTipoPreferido(TipoContacto.EMAIL);
+//        Usuario user1 = new Usuario();
+//        user1.setNombreUsuario("roberto");
+//        user1.setClave("1234");
+//        emp.setUsuario(user1);
+//        emp.persistir();
 
-        Empleado emp = new Empleado();
-        emp.setNombre("Juan");
-        emp.setMail("juan@mail.com");
-        emp.setTipoPreferido(TIPOCONTACTO.WHATSAPP);
+//        List<ServicioEspacialidad> resultadoList = new ArrayList<ServicioEspacialidad>();
+//        resultadoList = ServicioEspacialidad.obtenerServiciosActivos();
 
-        Usuario user1 = new Usuario();
-
+//        Cliente uncliente = new Cliente(); //PRUEBA BAJA OK
+//        uncliente.setCUIT("12123123121");
+//        uncliente.darDeBaja();
 
         //LOGUEO y generación del tipo de empleado
 
-        Empleado emp2 = new RRHH(emp);
+        Empleado emp2 = new Comercial(emp);
         System.out.println("Opciones disponibles: ");
         switch (emp2.getRol()) {
             case RRHH:{
@@ -45,7 +53,7 @@ public class Main {
                         System.out.println("2. Email");
                         System.out.println("3. Telefono");
                         int contactoPreferido = MiScanner.leerInt();
-                        tecnicoNuevo.setTipoPreferido(TIPOCONTACTO.getPorIndice((contactoPreferido)));
+                        tecnicoNuevo.setTipoPreferido(TipoContacto.getPorIndice((contactoPreferido)));
                         //PERSISTIR TECNICO
                         System.out.println("Proceso de alta OK");
                         break;
