@@ -94,9 +94,9 @@ public class Main {
                         clienteNuevo.setRazonSocial(MiScanner.leerTexto());
                         System.out.println("Ingresar eMail de contacto: ");
                         clienteNuevo.setMailContacto(MiScanner.leerTexto());
-
+                        clienteNuevo.persistir();
                         System.out.println("Desea agregar servicios al cliente: S-Si N-No");
-                        char sino = MiScanner.leerCaracter(new char[]{'S', 'N'});
+                        char sino = MiScanner.leerCaracter(new char[]{'S','s', 'N','n'});
                         if (sino == 'S') {
                             //agregar Servicios-Especialidades
                         }
