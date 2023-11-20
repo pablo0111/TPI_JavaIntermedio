@@ -7,7 +7,7 @@ public class MiScanner
     public static char leerCaracter() {
         String decision;
         Scanner lectura = new Scanner(System.in);
-        System.out.println("Por favor un valor: ");
+        System.out.println("-----Por favor ingresar un valor: ");
         decision = lectura.nextLine();
 
         return decision.charAt(0);
@@ -17,10 +17,10 @@ public class MiScanner
         String decision;
         Scanner lectura = new Scanner(System.in);
 
-        System.out.println("Por favor ingrese su seleccion: ");
+        System.out.println("-----Por favor ingrese su seleccion: ");
         decision = lectura.nextLine();
         while (!comprobarOpcionCorrecta(limitacion, decision.charAt(0))){
-            System.out.println("Opcion incorrecta, por favor volver a intentar: ");
+            System.out.println("-----Opcion incorrecta, por favor volver a intentar: ");
             decision = lectura.nextLine();
         }
         return decision.charAt(0);
@@ -40,7 +40,7 @@ public class MiScanner
         String decision;
         Scanner lectura = new Scanner(System.in);
 
-        System.out.println("Por favor ingrese su texto: ");
+        System.out.println("-----Por favor ingrese su texto: ");
         decision = lectura.nextLine();
 
         return decision;
@@ -49,7 +49,7 @@ public class MiScanner
     public static int leerInt() {
         String decision;
         Scanner lectura = new Scanner(System.in);
-        System.out.println("Por favor ingrese un valor numerico entero: ");
+        System.out.println("-----Por favor ingrese un valor numerico entero: ");
         decision = lectura.nextLine();
 
         return Integer.parseInt(decision);

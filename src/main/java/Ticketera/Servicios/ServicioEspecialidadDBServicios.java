@@ -71,6 +71,31 @@ public class ServicioEspecialidadDBServicios extends BaseDeDatosServicios{
         }
 
     }
+
+    public void eliminarEspecilidadTecnico(ServicioEspacialidad _serEsp, String legajo) throws Exception{
+        try {
+
+            this.conectar();
+
+            PreparedStatement st = this.getConexion().prepareStatement("DELETE FROM `tpi_argprog2`.`tecnico_especialidad`\n" +
+                    "WHERE `legajoID` = ?\n" +
+                    " AND `servicio_especialidadID` = ?" );
+            st.setLong(1, Long.parseLong(legajo));
+            st.setInt(2, _serEsp.getIndex());
+
+
+            st.executeUpdate();
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            this.cerrar();
+        }
+    }
+
     public List<String> readAllLines() throws Exception {
 
         List<String> listaServiciosEspecialidad;
@@ -102,5 +127,36 @@ public class ServicioEspecialidadDBServicios extends BaseDeDatosServicios{
         return listaServiciosEspecialidad;
 
     }
+    public List<String> readAllLinesTecnicoEspecialidad(String _legajo)throws Exception {
+        List<String> listaServiciosEspecialidad;
+        ResultSet reader;
 
+        try
+        {
+            this.conectar();
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT l.legajoID, l.servicio_especialidadID, p.Descripcion FROM tpi_argprog2.tecnico_especialidad l left join tpi_argprog2.servicios_especialidades p on l.servicio_especialidadID = p.idservicios_especialidades where legajoID='"+_legajo + "'");
+            listaServiciosEspecialidad = new ArrayList();
+            reader = st.executeQuery();
+            while (reader.next())
+            {
+                String objSerEsp = new String();
+                objSerEsp= objSerEsp.concat(reader.getString("legajoID"));
+                objSerEsp= objSerEsp.concat(",");
+                objSerEsp= objSerEsp.concat(reader.getString("servicio_especialidadID"));
+                objSerEsp= objSerEsp.concat(",");
+                objSerEsp= objSerEsp.concat(reader.getString("Descripcion"));
+
+                listaServiciosEspecialidad.add(objSerEsp);
+            }
+        } catch (Exception e)
+        {
+            throw e;
+        }
+        finally
+        {
+            this.cerrar();
+        }
+        return listaServiciosEspecialidad;
+
+    }
 }

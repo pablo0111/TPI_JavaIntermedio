@@ -73,7 +73,7 @@ public class ClienteDBServicios extends BaseDeDatosServicios{
         try
         {
             this.conectar();
-            PreparedStatement st = this.getConexion().prepareStatement("select * from cliente where idClienteCUIT ='"+cuit);
+            PreparedStatement st = this.getConexion().prepareStatement("select * from cliente where idClienteCUIT ='"+cuit+"'");
             reader = st.executeQuery();
             cliente= cliente.concat(reader.getString("idClienteCUIT"));
             cliente= cliente.concat(",");

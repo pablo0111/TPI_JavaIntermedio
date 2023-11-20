@@ -5,5 +5,9 @@ public enum Roles {
     RRHH,
     TECNICO,
     OPERADORMDA,
-    COMERCIAL
+    COMERCIAL;
+    static public Roles getPorIndice(int i){
+        Roles[] resul = Roles.values();
+        return resul[i-1];
+    }
 }
