@@ -163,6 +163,38 @@ public class ServicioEspecialidadDBServicios extends BaseDeDatosServicios{
     }
 
 
+    public  List<String> readAllLinesTecnicosConEspecialidad(int _especilidadServicio)throws Exception {
+        List<String> listaTecnicosHabilitados;
+        ResultSet reader;
+
+        try
+        {
+            this.conectar();
+            PreparedStatement st = this.getConexion().prepareStatement("select l.legajoID, p.nombre from tpi_argprog2.tecnico_especialidad l left join tpi_argprog2.nomina p on l.legajoID = p.idnominaLegajo where l.servicio_especialidadID = "+_especilidadServicio );
+            listaTecnicosHabilitados = new ArrayList();
+            reader = st.executeQuery();
+            while (reader.next())
+            {
+
+                String objSerEsp = new String();
+                objSerEsp= objSerEsp.concat(reader.getString(1));
+                objSerEsp= objSerEsp.concat(",");
+                objSerEsp= objSerEsp.concat(reader.getString(2));
+
+                listaTecnicosHabilitados.add(objSerEsp);
+            }
+        } catch (Exception e)
+        {
+            throw e;
+        }
+        finally
+        {
+            this.cerrar();
+        }
+        return listaTecnicosHabilitados;
+
+    }
+
     public List<String> readAllLinesClienteEspecialidad(String _cuit)throws Exception {
         List<String> listaServiciosEspecialidad;
         ResultSet reader;

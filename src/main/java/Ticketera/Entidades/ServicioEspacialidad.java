@@ -173,6 +173,18 @@ public class ServicioEspacialidad {
 
     }
 
+    public  List<String> obtenerTecnicosConEspecialidad(int _especilidadServicio){
+        ServicioEspecialidadDBServicios accesoDB = new ServicioEspecialidadDBServicios();
+        List<String> resultado;
+        try {
+
+            resultado=accesoDB.readAllLinesTecnicosConEspecialidad(_especilidadServicio);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return resultado;
+    }
+
 }
 
 

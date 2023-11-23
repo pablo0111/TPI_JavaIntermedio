@@ -47,6 +47,30 @@ public class Tecnico extends Empleado  {
     public void elimnarEspecilidad(ServicioEspacialidad _serv){
         especialidades.remove(_serv);
     }
+    /**
+     * Imprime los técnicos con su ID y su Nombre que tienen la especialidad que recibe como parámetro.
+     *
+     * @param especialidad recibe un int con el id de especialidad
+     * @return Devuelve un array con los id de los técnicos listados
+     *
+     */
+
+    public int[] listarTecnicosServicioEspecialidad (int especialidad) {
+        List <String> listado = new ArrayList<>();
+        int[] salida;
+
+        listado = new ServicioEspacialidad().obtenerTecnicosConEspecialidad(especialidad);
+        salida = new int[listado.size()];
+        if (listado.size()!=0) {
+            int index=0;
+            for (String linea: listado) {
+                System.out.println("Tenico Codigo: "+ linea.split(",")[0]+ " Nombre: " + linea.split(",")[1]);
+                salida[index]=Integer.parseInt(linea.split(",")[0]);
+                index++;
+            }
+        }
+        return salida;
+    }
 
     @Override
     public String toString(){

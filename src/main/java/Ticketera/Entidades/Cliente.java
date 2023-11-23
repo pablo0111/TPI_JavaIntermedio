@@ -20,7 +20,7 @@ public class Cliente {
         this.serviciosContratados = new ArrayList<ServicioEspacialidad>();
     }
 
-    public void persistir(){
+    public void persistir() {
         ClienteDBServicios accesoDB = new ClienteDBServicios();
         try {
             accesoDB.persistirCliente(this);
@@ -30,25 +30,32 @@ public class Cliente {
 
     }
 
-    public void recuperar(){
+    public boolean recuperar() {
         ClienteDBServicios accesoDB = new ClienteDBServicios();
-        String datos= new String();
+        String datos = new String();
+
         int formaRecupero;
-        if (getCUIT()!=null) formaRecupero=0; //por CUIT
-        else formaRecupero=1; //por RazonSocial
+        if (getCUIT() != null) formaRecupero = 0; //por CUIT
+        else formaRecupero = 1; //por RazonSocial
         try {
-            if (formaRecupero==0) datos = accesoDB.obtenerCliente(this.getCUIT(), formaRecupero);
+            if (formaRecupero == 0) datos = accesoDB.obtenerCliente(this.getCUIT(), formaRecupero);
             else datos = accesoDB.obtenerCliente(this.getRazonSocial(), formaRecupero);
             this.setCUIT(datos.split(",")[0]);
             this.setRazonSocial(datos.split(",")[1]);
             this.setMailContacto(datos.split(",")[2]);
             serviciosContratados.addAll(obtenerServiciosActivosCliente(getCUIT()));
 
+
+        } catch (ClienteNoEncontradoException e) {
+            System.out.println(e.getMessage());
+            return false;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
+        return true;
     }
+
+
 
     public void actualizar (){
         ClienteDBServicios accesoDB = new ClienteDBServicios();

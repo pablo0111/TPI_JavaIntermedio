@@ -3,18 +3,32 @@ package Ticketera;
 import Ticketera.Entidades.*;
 import Ticketera.Servicios.MiScanner;
 
-import java.sql.SQLOutput;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Main {
+//    private static EntityManager manager;
+//    private static EntityManagerFactory emf;
     public static void main(String[] args) {
         System.out.println("Bienvenido a la Ticketera");
 
+//        emf= Persistence.createEntityManagerFactory("Persistencia");
+//        manager = emf.createEntityManager();
+//
+//        Incidente nuevoIncidente=new Incidente();
+//        nuevoIncidente.setCUIT("55102003001");
+//        nuevoIncidente.setEstado(EstadoIncidente.ABIERTO);
+//        nuevoIncidente.setDescripcion("Incidente de Prueba");
+//        nuevoIncidente.setLegajoTecnico("8");
+//        nuevoIncidente.setIdServicio(1);
+//        manager.persist(nuevoIncidente);
+
+
+
 //        String[] args2 = {"pedro","1234"}; //RRHH -2
-        String[] args2 = {"patricia","1234"}; //COMERCIAL - 5
+//        String[] args2 = {"patricia","1234"}; //COMERCIAL - 5
 //        String[] args2 = {"juan","1234"}; //TECNICO -3
-//        String[] args2 = {"eva","1234"}; //OPERADORMDA -4
+        String[] args2 = {"eva","1234"}; //OPERADORMDA -4
         Usuario user1 = new Usuario(args2[0], args2[1]);
         Empleado emp = new Empleado();
 
@@ -174,11 +188,71 @@ public class Main {
                 break;
             }
             case OPERADORMDA:{
-                System.out.println("usted solo puede crear un incidente");
-                System.out.println("Ingrese CUIT del cliente (Solo numeros, sin -)");
+                Cliente caller = new Cliente();
+                Incidente nIncidente = new Incidente();
+                System.out.println("Bienvenido "+ emp.getNombre());
+                boolean seguir= true;
+                while (seguir) {
+                do {
+                    System.out.println("1. Obtener cliente por CUIT (Solo numeros, sin -)");
+                    System.out.println("2. Obtener cliente por Razon Social");
+                    int opcion = MiScanner.leerInt();
+                    if (opcion == 1) {
+                        System.out.println("--Seleccion: CUIT");
+                        caller.setCUIT(MiScanner.leerTexto());
+                    }
+                    else {
+                        System.out.println("--Seleccion: Razon Social");
+                        caller.setRazonSocial(MiScanner.leerTexto());
+                    }
+                } while (!caller.recuperar());
+                nIncidente.setCUIT(caller.getCUIT());
+                System.out.println("Buscando Servicios activos....\n");
+                final int[] contador = {0};
+                ServicioEspacialidad.obtenerServiciosActivosCliente(caller.getCUIT()).stream().forEach((dato) -> {
+                    System.out.println("Seleccion: " + dato.getIndex() + " Servicio: " + dato.getNombre());
+                    contador[0]++;
+                });
+                if (contador[0] ==0) System.out.println("Cliente sin servicios activos");
+                else {
+                    nIncidente.setIdServicio(  MiScanner.leerInt());
+                    System.out.println("Ingrese la descripción del problema");
+                    nIncidente.setDescripcion(MiScanner.leerTexto());
+                    System.out.println("Ingrese tipo de problema");
+                    List <TipoProblemas> listadoProblemas;
+                    try {
+                        listadoProblemas=TipoProblemas.obtenerTipoProblemas();
+                        listadoProblemas.stream().forEach((problema)-> System.out.println("Seleccion: "+problema.getId()+ ". Descripcion: " + problema.toString()));
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                    int seleccionProblema = MiScanner.leerInt();
+                    nIncidente.setProblema(listadoProblemas.stream().filter((dato)-> dato.getId()==seleccionProblema).findFirst().get());
+                    System.out.println("¿Desea ingresar horas adicionales por la complejidad del problema?  S-Si N-No");
 
-
-
+                    char sino = MiScanner.leerCaracter(new char[]{'S','s', 'N','n'});
+                    if (sino == 'S' || sino=='s') {
+                        //agregar Servicios-Especialidades
+                        nIncidente.setHsComplejidad(MiScanner.leerInt());
+                    }
+                    Tecnico nTecnico= new Tecnico();
+                    int[] referenciaTecnicos = nTecnico.listarTecnicosServicioEspecialidad(nIncidente.getIdServicio());
+                    System.out.println("Seleccione el tecnico");
+                    nTecnico.setLegajo(String.valueOf(MiScanner.leerInt()));
+                    nTecnico.recuperar();
+                    System.out.println("Tecnico seleccionado: " +nTecnico.toString());
+                    nIncidente.setLegajoTecnico(nTecnico.getLegajo());
+                    System.out.println("Fecha y hora actual: "+LocalDateTime.now());
+                    System.out.println("Horas requeridas por tabla: "+nIncidente.getProblema().getETR());
+                    System.out.println("Horas agregadas en llamado: "+ nIncidente.getHsComplejidad());
+                    nIncidente.tiempoEstimadoResolucion();
+                    int numeroIncidente= nIncidente.crearIncidente();
+                    if (numeroIncidente!=0) System.out.println("Incidente creado con exito, numero de ticket: > "+ numeroIncidente+ " <\n");
+                }
+                    System.out.println("¿Desea cargar un nuevo ticket?  S-Si N-No");
+                    char sino = MiScanner.leerCaracter(new char[]{'S','s', 'N','n'});
+                    if (sino == 'N' || sino=='n') seguir=false;
+                }
 
 
                 break;

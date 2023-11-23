@@ -1,6 +1,7 @@
 package Ticketera.Servicios;
 
 import Ticketera.Entidades.Cliente;
+import Ticketera.Entidades.ClienteNoEncontradoException;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -77,13 +78,14 @@ public class ClienteDBServicios extends BaseDeDatosServicios{
             this.conectar();
             PreparedStatement st = this.getConexion().prepareStatement(sqlStatement);
             reader = st.executeQuery();
-            reader.next();
-            cliente= cliente.concat(reader.getString("idClienteCUIT"));
-            cliente= cliente.concat(",");
-            cliente= cliente.concat(reader.getString("RazonSocial"));
-            cliente= cliente.concat(",");
-            cliente= cliente.concat(reader.getString("eMail"));
-
+            boolean hayDatos = reader.next();
+            if (hayDatos) {
+                cliente = cliente.concat(reader.getString("idClienteCUIT"));
+                cliente = cliente.concat(",");
+                cliente = cliente.concat(reader.getString("RazonSocial"));
+                cliente = cliente.concat(",");
+                cliente = cliente.concat(reader.getString("eMail"));
+            } else throw new ClienteNoEncontradoException();
 
         } catch (Exception e)
         {
