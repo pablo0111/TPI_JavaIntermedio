@@ -11,6 +11,8 @@ import static Ticketera.Entidades.ServicioEspacialidad.obtenerServiciosActivosTe
 @Data
 public class Tecnico extends Empleado  {
     private List<ServicioEspacialidad> especialidades;
+    private List<Incidente> incidentesAbiertos;
+
     public Tecnico() {
         setRol(Roles.TECNICO);
         especialidades = new ArrayList<ServicioEspacialidad>();
@@ -71,6 +73,28 @@ public class Tecnico extends Empleado  {
         }
         return salida;
     }
+
+    public List<String> cargarIncidentesAbiertos(){
+        List<String> inc = new ArrayList<>();
+        setIncidentesAbiertos(Incidente.cargarIncidentesTecnico(this.getLegajo(), EstadoIncidente.ABIERTO));
+        for (Incidente caso : incidentesAbiertos) {
+            inc.add("Ticket: " + caso.getNumeroINC() + " Descripcion: "+ caso.getDescripcion() + " Cliente: " +caso.getCUIT() + " Fecha de creación: " + caso.getFechacreacion()+"\n Hs adicionales por complejidad: "+caso.getHsComplejidad());
+        }
+        return inc;
+    }
+
+    public void cerrarIncidente(int op){
+        Incidente incidente = incidentesAbiertos.stream().filter((caso)->caso.getNumeroINC()==op).findFirst().get();
+        incidente.cerrar();
+
+    }
+    public void actualizarIncidente(int op){
+        Incidente incidente = incidentesAbiertos.stream().filter((caso)->caso.getNumeroINC()==op).findFirst().get();
+        incidente.actualizar();
+
+    }
+
+
 
     @Override
     public String toString(){

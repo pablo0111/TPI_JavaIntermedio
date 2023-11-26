@@ -14,6 +14,11 @@ public class TipoProblemas {
     private String descripcion;
     private int ETR;
 
+    public TipoProblemas(int id) {
+        this.id = id;
+        this.recuperar();
+    }
+
     @Override
     public String toString (){
         return getDescripcion();
@@ -25,4 +30,18 @@ public class TipoProblemas {
         resultadoString.stream().forEach((linea)->resultado.add( new TipoProblemas(Integer.parseInt(linea.split(",")[0]),linea.split(",")[1],Integer.parseInt(linea.split(",")[2]))));
         return resultado;
     }
+
+    private void recuperar(){
+        String datos;
+        try {
+            datos = new TipoProblemaDBServicios().getServicio(id);
+            setDescripcion(datos.split(",")[1]);
+            setETR(Integer.parseInt(datos.split(",")[2]));
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 }
