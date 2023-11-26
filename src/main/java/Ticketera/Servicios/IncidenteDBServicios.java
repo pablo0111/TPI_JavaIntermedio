@@ -82,11 +82,14 @@ public class IncidenteDBServicios extends BaseDeDatosServicios{
             PreparedStatement st = this.getConexion().prepareStatement("UPDATE `tpi_argprog2`.`incidente`\n" +
                     "SET\n" +
                     "`descripcionResolucion` = ?,\n" +
-                    "`idEstado` = ?\n" +
+                    "`idEstado` = ?,\n" +
+                    "`fechaResolucion` = ?\n" +
                     "WHERE `idincidenteNumero` = ?");
             st.setString(1, _incidente.getInformacionCierre());
             st.setInt (2, _incidente.getEstado().ordinal()+1);
-            st.setLong(3,_incidente.getNumeroINC());
+            st.setObject(3,Timestamp.valueOf(LocalDateTime.now()));
+            st.setLong(4,_incidente.getNumeroINC());
+
 
             st.executeUpdate();
 
@@ -120,7 +123,8 @@ public class IncidenteDBServicios extends BaseDeDatosServicios{
                     "`descripcionProblema` = ?,\n" +
                     "`descripcionResolucion` = ?,\n" +
                     "`idEstado` = ?,\n" +
-                    "`idServicio` = ?\n" +
+                    "`idServicio` = ?,\n" +
+                    "`fechaResolucion` = ?\n" +
                     "WHERE `idincidenteNumero` = ?");
             st.setLong(11,_incidente.getNumeroINC());
             st.setLong (1,Long.parseLong(persistencia.getCUIT()));
@@ -134,6 +138,8 @@ public class IncidenteDBServicios extends BaseDeDatosServicios{
             st.setString(8, persistencia.getInformacionCierre());
             st.setInt(9,persistencia.getEstado().ordinal()+1);
             st.setInt(10,persistencia.getIdServicio());
+            if (persistencia.getFechaCierre()!=null) st.setObject(11,Timestamp.valueOf(persistencia.getFechaCierre()));
+            else st.setNull(11, Types.DATE);
 
             st.executeUpdate();
 
@@ -169,6 +175,7 @@ public class IncidenteDBServicios extends BaseDeDatosServicios{
             else _incidenteACompletar.setInformacionCierre("");
             _incidenteACompletar.setEstado(EstadoIncidente.getPorIndice(reader.getInt("idEstado")));
             _incidenteACompletar.setIdServicio(reader.getInt("idServicio"));
+            if ((reader.getString("fechaResolucion")!= null) ) _incidenteACompletar.setFechaCierre(LocalDateTime.parse(reader.getString("fechaResolucion"),formatter));
 
         } catch (Exception e)
         {
@@ -220,6 +227,9 @@ public class IncidenteDBServicios extends BaseDeDatosServicios{
                 objSerEsp= objSerEsp.concat(reader.getString("idEstado"));
                 objSerEsp= objSerEsp.concat("///");
                 objSerEsp= objSerEsp.concat(reader.getString("idServicio"));
+                objSerEsp= objSerEsp.concat("///");
+                if (reader.getString("fechaResolucion")!=null) objSerEsp= objSerEsp.concat(reader.getString("fechaResolucion"));
+                        else objSerEsp=objSerEsp.concat("null");
 
 
                 listadoIncidentes.add(objSerEsp);

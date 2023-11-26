@@ -155,7 +155,12 @@ public class Ticketera {
                         }
                         break;
                     case '7':
-
+                        System.out.println("El incidente que se resolvió más rapido fue:");
+                        try {
+                            System.out.println(Reportes.tecnicoQueResuelveMasRapidoIncidentes());
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
                 }
 
 

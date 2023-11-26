@@ -44,10 +44,12 @@ public class Incidente {
     @Column (name = "idServicio")
     private int idServicio;
 
+    private LocalDateTime fechaCierre;
+
     public Incidente() {
         estado=EstadoIncidente.ABIERTO;
     }
-    public Incidente(long numeroINC, String CUIT, String legajoTecnico, long parentINC, TipoProblemas problema, int hsComplejidad, LocalDateTime fechacreacion, String descripcion, String informacionCierre, EstadoIncidente estado, int idServicio) {
+    public Incidente(long numeroINC, String CUIT, String legajoTecnico, long parentINC, TipoProblemas problema, int hsComplejidad, LocalDateTime fechacreacion, String descripcion, String informacionCierre, EstadoIncidente estado, int idServicio, LocalDateTime fechacierre) {
         this.numeroINC = numeroINC;
         this.CUIT = CUIT;
         this.legajoTecnico = legajoTecnico;
@@ -59,6 +61,7 @@ public class Incidente {
         this.informacionCierre = informacionCierre;
         this.estado = estado;
         this.idServicio = idServicio;
+        this.fechaCierre = fechacierre;
     }
 
     public void tiempoEstimadoResolucion(){
@@ -86,12 +89,15 @@ public class Incidente {
             if (resultadoDB.size()!=0) for (String dato: resultadoDB)
                                             {
                                                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                                                LocalDateTime fechafin=null;
+                                                if (!dato.split("///")[11].equals("null")) fechafin=LocalDateTime.parse(dato.split("///")[11],formatter);
 
                                                 TipoProblemas problema =new TipoProblemas(Integer.parseInt(dato.split("///")[4]));
                                                 Incidente item = new Incidente(Long.valueOf(dato.split("///")[0]).longValue(),dato.split("///")[1],dato.split("///")[2],
                                                         Long.valueOf(dato.split("///")[3]).longValue(),problema,Integer.valueOf(dato.split("///")[5]).intValue(),
                                                         LocalDateTime.parse(dato.split("///")[6],formatter),dato.split("///")[7], dato.split("///")[8],
-                                                        EstadoIncidente.getPorIndice(Integer.parseInt(dato.split("///")[9])), Integer.valueOf(dato.split("///")[10]).intValue());
+                                                        EstadoIncidente.getPorIndice(Integer.parseInt(dato.split("///")[9])), Integer.valueOf(dato.split("///")[10]).intValue(),
+                                                        fechafin);
                                                 resultado.add(item);
                                             }
 //long, string,string, long, tipoproblema, int, localdatetime,string,string, estadoincidente, int
