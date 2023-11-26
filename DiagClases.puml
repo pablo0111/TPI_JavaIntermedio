@@ -1,0 +1,243 @@
+@startuml
+class Ticketera.Main {
++ {static} void main(String[])
+}
+class Ticketera.Servicios.TipoProblemaDBServicios {
++ List<String> readAllLines()
++ String getServicio(int)
+}
+class Ticketera.Servicios.Reportes {
++ {static} List<String> incidentesAsignadosPorTecnico()
++ {static} String tecnicoMasIncidentesResueltos(int)
++ {static} String tecnicoMasIncidentesResueltosEspecialidad(int,int)
++ {static} String tecnicoQueResuelveMasRapidoIncidentes()
+}
+class Ticketera.Entidades.OperadorMDA {
+}
+class Ticketera.Entidades.Incidente {
+- long numeroINC
+- String CUIT
+- String legajoTecnico
+- long parentINC
+- TipoProblemas problema
+- int hsComplejidad
+- LocalDateTime fechacreacion
+- String descripcion
+- String informacionCierre
+- EstadoIncidente estado
+- int idServicio
+- LocalDateTime fechaCierre
++ void tiempoEstimadoResolucion()
++ int crearIncidente()
++ {static} List<Incidente> cargarIncidentesTecnico(String,EstadoIncidente)
++ void cerrar()
++ void actualizar()
++ void recuperar()
++ {static} Incidente compararIncidentes(Incidente,Incidente)
+}
+class Ticketera.Entidades.ServicioEspacialidad {
+- String nombre
+- int index
++ void persistir()
++ {static} List<ServicioEspacialidad> obtenerServiciosActivos()
++ {static} List<ServicioEspacialidad> obtenerServiciosActivosTecnico(String)
++ {static} List<ServicioEspacialidad> obtenerServiciosActivosCliente(String)
++ {static} void eliminarServicioTecnico(String,ServicioEspacialidad)
++ {static} void eliminarServicioCliente(String,ServicioEspacialidad)
++ {static} void actualizarServicioTecnico(String,List<ServicioEspacialidad>)
++ {static} void actualizarServicioCliente(String,List<ServicioEspacialidad>)
+# void persistirEspecialidadTecnico(String)
+# void persistirEspecialidadCliente(String)
++ List<String> obtenerTecnicosConEspecialidad(int)
+}
+class Ticketera.Servicios.BaseDeDatosServicios {
+- Connection conexion
+- String servidor
+- String usuario
+- String puerto
+- String basedato
+- String password
+- String motor
+- String nameClass
+- boolean conecta
+- Path archivoConfig
++ Path getArchivoConfig()
++ void setArchivoConfig(Path)
++ String getNameClass()
++ void setNameClass(String)
++ String getServidor()
++ boolean isConecta()
++ void setConecta(boolean)
++ void setServidor(String)
++ String getUsuario()
++ void setUsuario(String)
++ String getPuerto()
++ void setPuerto(String)
++ String getBasedato()
++ void setBasedato(String)
++ String getPassword()
++ void setPassword(String)
++ String getMotor()
++ void setMotor(String)
++ Connection getConexion()
++ void setConexion(Connection)
++ void conectar()
++ void instanciarPro()
++ void instanciarPro(Path)
++ void cerrar()
+}
+class Ticketera.Servicios.TecnicoDBServicios {
++ void persistirTecnico(Tecnico)
+}
+class Ticketera.Entidades.Empleado {
+- Usuario usuario
+- String legajo
+- String nombre
+- String mail
+- String telefono
+- TipoContacto tipoPreferido
+- Roles rol
+- boolean estadoActividad
++ Roles getRol()
+# void setRol(Roles)
++ String persistir()
++ void recuperar()
++ void actualizar()
++ void bajaLogica(Empleado)
++ String toString()
+}
+class Ticketera.Entidades.Usuario {
+- String nombreUsuario
+- String clave
+- boolean LoginStatus
++ boolean Login()
+}
+enum Ticketera.Entidades.Roles {
++  ADMIN
++  RRHH
++  TECNICO
++  OPERADORMDA
++  COMERCIAL
++ {static} Roles getPorIndice(int)
+}
+class Ticketera.Servicios.EmpleadoDBServicios {
++ void persistirEmpleado(Empleado)
++ String recuperarEmpleado(String,int)
++ void actualizarEmpleado(Empleado)
++ String recuperarEmpleadoID(String)
++ void bajaLogicaDB(String)
+}
+class Ticketera.Entidades.RRHH {
+}
+enum Ticketera.Entidades.EstadoCliente {
++  ACTIVO
++  INACTIVO
++ {static} EstadoCliente getPorIndice(int)
+}
+class Ticketera.Servicios.IncidenteDBServicios {
++ int persisirCrearIncidente(Incidente)
++ void cerrarIncidente(Incidente)
++ void persistirIncidente(Incidente)
++ void recuperar(Incidente)
++ List<String> recuperarIncidentesPorTecnico(String,EstadoIncidente)
+}
+class Ticketera.Entidades.ClienteNoEncontradoException {
+}
+class Ticketera.Entidades.Comercial {
+}
+class Ticketera.Servicios.Ticketera {
++ {static} void ejecutar(Empleado)
+}
+class Ticketera.Servicios.ServicioEspecialidadDBServicios {
++ void agregarServicioEspecialidad(ServicioEspacialidad)
++ void agregarEspecilidadTecnico(ServicioEspacialidad,String)
++ void eliminarEspecilidadTecnico(ServicioEspacialidad,String)
++ List<String> readAllLines()
++ List<String> readAllLinesTecnicoEspecialidad(String)
++ List<String> readAllLinesTecnicosConEspecialidad(int)
++ List<String> readAllLinesClienteEspecialidad(String)
++ void agregarEspecilidadCliente(ServicioEspacialidad,String)
++ void eliminarEspecilidadCliente(ServicioEspacialidad,String)
+}
+enum Ticketera.Entidades.EstadoIncidente {
++  ABIERTO
++  RESUELTO
++  ENESPERA
++  CANCELADO
++ {static} EstadoIncidente getPorIndice(int)
+}
+enum Ticketera.Entidades.TipoContacto {
++  WHATSAPP
++  EMAIL
++  TELEFONO
++ {static} TipoContacto getPorIndice(int)
+}
+class Ticketera.Servicios.MiScanner {
++ {static} char leerCaracter()
++ {static} char leerCaracter(char[])
++ {static} boolean comprobarOpcionCorrecta(char[],char)
++ {static} String leerTexto()
++ {static} int leerInt()
+}
+class Ticketera.Entidades.Cliente {
+- String CUIT
+- String razonSocial
+- String mailContacto
+- List<ServicioEspacialidad> serviciosContratados
++ void persistir()
++ boolean recuperar()
++ void actualizar()
++ boolean tieneServicio(ServicioEspacialidad)
++ void agregarServicio(ServicioEspacialidad)
++ void elimnarServicio(ServicioEspacialidad)
++ void darDeBaja()
++ String toString()
+}
+class Ticketera.Servicios.UsuarioDBServicios {
++ String obtenerClavedeUsuario(String)
+}
+class Ticketera.Entidades.TipoProblemas {
+- int id
+- String descripcion
+- int ETR
++ String toString()
++ {static} List<TipoProblemas> obtenerTipoProblemas()
+- void recuperar()
+}
+class Ticketera.Servicios.ClienteDBServicios {
++ void persistirCliente(Cliente)
++ void bajaCliente(String)
++ String obtenerCliente(String,int)
++ void actualizarCliente(Cliente)
+}
+class Ticketera.Entidades.Tecnico {
+- List<ServicioEspacialidad> especialidades
+- List<Incidente> incidentesAbiertos
++ void agregarEspecilidad(ServicioEspacialidad)
++ String persistir()
++ void recuperar()
++ boolean tieneEspecialidad(ServicioEspacialidad)
++ void actualizar()
++ void elimnarEspecilidad(ServicioEspacialidad)
++ int[] listarTecnicosServicioEspecialidad(int)
++ List<String> cargarIncidentesAbiertos()
++ void cerrarIncidente(int)
++ void actualizarIncidente(int)
++ String toString()
+}
+
+
+Ticketera.Servicios.BaseDeDatosServicios <|-- Ticketera.Servicios.TipoProblemaDBServicios
+Ticketera.Servicios.BaseDeDatosServicios <|-- Ticketera.Servicios.Reportes
+Ticketera.Entidades.Empleado <|-- Ticketera.Entidades.OperadorMDA
+Ticketera.Servicios.BaseDeDatosServicios <|-- Ticketera.Servicios.TecnicoDBServicios
+Ticketera.Servicios.BaseDeDatosServicios <|-- Ticketera.Servicios.EmpleadoDBServicios
+Ticketera.Entidades.Empleado <|-- Ticketera.Entidades.RRHH
+Ticketera.Servicios.BaseDeDatosServicios <|-- Ticketera.Servicios.IncidenteDBServicios
+Ticketera.Entidades.Exception <|-- Ticketera.Entidades.ClienteNoEncontradoException
+Ticketera.Entidades.Empleado <|-- Ticketera.Entidades.Comercial
+Ticketera.Servicios.BaseDeDatosServicios <|-- Ticketera.Servicios.ServicioEspecialidadDBServicios
+Ticketera.Servicios.BaseDeDatosServicios <|-- Ticketera.Servicios.UsuarioDBServicios
+Ticketera.Servicios.BaseDeDatosServicios <|-- Ticketera.Servicios.ClienteDBServicios
+Ticketera.Entidades.Empleado <|-- Ticketera.Entidades.Tecnico
+@enduml

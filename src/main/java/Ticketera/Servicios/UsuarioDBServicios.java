@@ -27,7 +27,7 @@ public class UsuarioDBServicios extends BaseDeDatosServicios{
                     "where `nomina`.`usuario` = '"+_user+"';");
             reader = st.executeQuery();
             reader.next();
-            clave = clave.concat(reader.getString("clave"));
+            clave = clave.concat(reader.getString(1));
 
         } catch (Exception e)
         {
