@@ -13,6 +13,7 @@ public class Main {
         System.out.println("Bienvenido a la Ticketera");
 
 
+
         if (args.length==0) {
         System.out.println("Modo administrador");
         System.out.println("Desea ser:");
