@@ -14,10 +14,10 @@ public class Ticketera {
             case RRHH:{
                 System.out.println("1. Dar de alta un técnico");
                 System.out.println("2. Dar de baja un técnico");
-                System.out.println("3. Agregar o Quitar Especilidad a un técnico");
-                System.out.println("4. Reporte de tickets del dia");
-                System.out.println("5. Técnico con más tickets en N dias");
-                System.out.println("6. Técnico con más tickets en N dias para una especilidad");
+                System.out.println("3. Agregar o Quitar Especialidad a un técnico");
+                System.out.println("4. Reporte de tickets del día");
+                System.out.println("5. Técnico con más tickets en N días");
+                System.out.println("6. Técnico con más tickets en N días para una especialidad");
                 System.out.println("7. Técnico que resolvió el incidente más rápido");
                 char decision = MiScanner.leerCaracter();
                 switch (decision) {
@@ -27,12 +27,12 @@ public class Ticketera {
                         tecnicoNuevo.setNombre(MiScanner.leerTexto());
                         System.out.println("Ingresar Mail");
                         tecnicoNuevo.setMail(MiScanner.leerTexto());
-                        System.out.println("Ingresar Telefono");
+                        System.out.println("Ingresar Teléfono");
                         tecnicoNuevo.setTelefono(MiScanner.leerTexto());
-                        System.out.println("Ingresar Metodo de contacto preferido");
+                        System.out.println("Ingresar Método de contacto preferido");
                         System.out.println("1. Whatsapp ");
                         System.out.println("2. Email");
-                        System.out.println("3. Telefono");
+                        System.out.println("3. Teléfono");
                         int contactoPreferido = MiScanner.leerInt();
                         tecnicoNuevo.setTipoPreferido(TipoContacto.getPorIndice((contactoPreferido)));
                         System.out.println("Ingresar Usuario de Login");
@@ -46,7 +46,7 @@ public class Ticketera {
                             //listo todas las especialidades
                             boolean continuar = true;
                             while (continuar) {
-                                ServicioEspacialidad.obtenerServiciosActivos().stream().forEach((dato) -> System.out.println("Seleccion: " + dato.getIndex() + " Servicio: " + dato.getNombre()));
+                                ServicioEspacialidad.obtenerServiciosActivos().stream().forEach((dato) -> System.out.println("Selección: " + dato.getIndex() + " Servicio: " + dato.getNombre()));
                                 int seleccion =  MiScanner.leerInt();
                                 tecnicoNuevo.agregarEspecilidad(new ServicioEspacialidad(ServicioEspacialidad.obtenerServiciosActivos().stream().filter((dato)-> dato.getIndex()==seleccion).findFirst().get()));
                                 System.out.println("¿Desea agregar otra especialidad?  S-Si N-No");
@@ -61,7 +61,7 @@ public class Ticketera {
                         break;
                     }
                     case '2': {
-                        System.out.println("Ingresar el legajo del tecnico a dar de baja: ");
+                        System.out.println("Ingresar el legajo del técnico a dar de baja: ");
                         String respuesta = MiScanner.leerTexto();
                         Empleado emp2 = new Empleado();
                         emp2.setLegajo(respuesta);
@@ -74,7 +74,7 @@ public class Ticketera {
                         break;
                     }
                     case '3': {
-                        System.out.println("Ingresar el legajo del tecnico a editar: ");
+                        System.out.println("Ingresar el legajo del técnico a editar: ");
                         String respuesta = MiScanner.leerTexto();
                         Tecnico emp2 = new Tecnico();
                         emp2.setLegajo(respuesta);
@@ -85,12 +85,12 @@ public class Ticketera {
                         if (sino == 'S' || sino=='s') {
                             //listo todas las especialidades
                             System.out.println("Especialidades actuales");
-                            ServicioEspacialidad.obtenerServiciosActivosTecnico(emp2.getLegajo()).stream().forEach((dato) -> System.out.println("Seleccion: " + dato.getIndex() + " Servicio: " + dato.getNombre()));
+                            ServicioEspacialidad.obtenerServiciosActivosTecnico(emp2.getLegajo()).stream().forEach((dato) -> System.out.println("Selección: " + dato.getIndex() + " Servicio: " + dato.getNombre()));
                             System.out.println();
                             boolean continuar = true;
                             while (continuar) {
                                 System.out.println("Especialidades disponibles");
-                                ServicioEspacialidad.obtenerServiciosActivos().stream().filter((dato)-> !emp2.tieneEspecialidad(dato)).forEach((dato)-> System.out.println("Seleccion: " + dato.getIndex() + " Servicio: " + dato.getNombre()));
+                                ServicioEspacialidad.obtenerServiciosActivos().stream().filter((dato)-> !emp2.tieneEspecialidad(dato)).forEach((dato)-> System.out.println("Selección: " + dato.getIndex() + " Servicio: " + dato.getNombre()));
 
                                 int seleccion =  MiScanner.leerInt();
                                 emp2.agregarEspecilidad(new ServicioEspacialidad(ServicioEspacialidad.obtenerServiciosActivos().stream().filter((dato)-> dato.getIndex()==seleccion).findFirst().get()));
@@ -100,17 +100,17 @@ public class Ticketera {
                             }
                             emp2.actualizar();
                         }
-                        System.out.println("Edicion completada");
+                        System.out.println("Edición completada");
                         System.out.println("Desea eliminar especialidades al técnico: S-Si N-No");
                         sino = MiScanner.leerCaracter(new char[]{'S','s', 'N','n'});
                         if (sino == 'S' || sino=='s') {
                             //listo todas las especialidades
                             System.out.println("Especialidades actuales");
-                            ServicioEspacialidad.obtenerServiciosActivosTecnico(emp2.getLegajo()).stream().forEach((dato) -> System.out.println("Seleccion: " + dato.getIndex() + " Servicio: " + dato.getNombre()));
+                            ServicioEspacialidad.obtenerServiciosActivosTecnico(emp2.getLegajo()).stream().forEach((dato) -> System.out.println("Selección: " + dato.getIndex() + " Servicio: " + dato.getNombre()));
                             System.out.println();
                             boolean continuar = true;
                             while (continuar) {
-                                System.out.println("Elejir especilidad a elminar: ");
+                                System.out.println("Elegir especialidad a eliminar: ");
                                 int seleccion =  MiScanner.leerInt();
                                 emp2.elimnarEspecilidad(new ServicioEspacialidad(ServicioEspacialidad.obtenerServiciosActivos().stream().filter((dato)-> dato.getIndex()==seleccion).findFirst().get()));
                                 System.out.println("¿Desea eliminar otra especialidad?  S-Si N-No");
@@ -118,7 +118,7 @@ public class Ticketera {
                                 if (sino2 == 'n' || sino2 == 'N' ) continuar = false;
                             }
                             emp2.actualizar();
-                            System.out.println("Edicion completada");
+                            System.out.println("Edición completada");
                         }
 
                         break;
@@ -145,7 +145,7 @@ public class Ticketera {
                         System.out.println("Ingresar la cantidad N de días: ");
                         seleccion = MiScanner.leerInt();
                         System.out.println("Elegir servicio: ");
-                        ServicioEspacialidad.obtenerServiciosActivos().stream().forEach((dato)-> System.out.println("Seleccion: " + dato.getIndex() + " Servicio: " + dato.getNombre()));
+                        ServicioEspacialidad.obtenerServiciosActivos().stream().forEach((dato)-> System.out.println("Selección: " + dato.getIndex() + " Servicio: " + dato.getNombre()));
                         int seleccion1=MiScanner.leerInt();
                         System.out.println("Resultado de 'Técnico con más tickets en "+seleccion+" dias para el servicio "+ServicioEspacialidad.obtenerServiciosActivos().stream().filter((caso)->caso.getIndex()==seleccion1).findFirst().get().getNombre()+"'");
                         try {
@@ -155,7 +155,7 @@ public class Ticketera {
                         }
                         break;
                     case '7':
-                        System.out.println("El incidente que se resolvió más rapido fue:");
+                        System.out.println("El incidente que se resolvió más rápido fue:");
                         try {
                             System.out.println(Reportes.tecnicoQueResuelveMasRapidoIncidentes());
                         } catch (Exception e) {
@@ -170,18 +170,18 @@ public class Ticketera {
                 Cliente caller = new Cliente();
                 Incidente nIncidente = new Incidente();
                 boolean seguir= true;
-                System.out.println("Para poder crear un incidente debe ingresar el cliente, debajo las opciones de busqueda");
+                System.out.println("Para poder crear un incidente debe ingresar el cliente, debajo las opciones de búsqueda");
                 while (seguir) {
                     do {
-                        System.out.println("1. Obtener cliente por CUIT (Solo numeros, sin -)");
-                        System.out.println("2. Obtener cliente por Razon Social");
+                        System.out.println("1. Obtener cliente por CUIT (Solo números, sin -)");
+                        System.out.println("2. Obtener cliente por Razón Social");
                         int opcion = MiScanner.leerInt();
                         if (opcion == 1) {
-                            System.out.println("--Seleccion: CUIT");
+                            System.out.println("--Selección: CUIT");
                             caller.setCUIT(MiScanner.leerTexto());
                         }
                         else {
-                            System.out.println("--Seleccion: Razon Social");
+                            System.out.println("--Selección: Razón Social");
                             caller.setRazonSocial(MiScanner.leerTexto());
                         }
                     } while (!caller.recuperar());
@@ -189,7 +189,7 @@ public class Ticketera {
                     System.out.println("Buscando Servicios activos....\n");
                     final int[] contador = {0};
                     ServicioEspacialidad.obtenerServiciosActivosCliente(caller.getCUIT()).stream().forEach((dato) -> {
-                        System.out.println("Seleccion: " + dato.getIndex() + " Servicio: " + dato.getNombre());
+                        System.out.println("Selección: " + dato.getIndex() + " Servicio: " + dato.getNombre());
                         contador[0]++;
                     });
                     if (contador[0] ==0) System.out.println("Cliente sin servicios activos");
@@ -201,7 +201,7 @@ public class Ticketera {
                         List<TipoProblemas> listadoProblemas;
                         try {
                             listadoProblemas=TipoProblemas.obtenerTipoProblemas();
-                            listadoProblemas.stream().forEach((problema)-> System.out.println("Seleccion: "+problema.getId()+ ". Descripcion: " + problema.toString()));
+                            listadoProblemas.stream().forEach((problema)-> System.out.println("Selección: "+problema.getId()+ ". Descripción: " + problema.toString()));
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
@@ -216,17 +216,17 @@ public class Ticketera {
                         }
                         Tecnico nTecnico= new Tecnico();
                         int[] referenciaTecnicos = nTecnico.listarTecnicosServicioEspecialidad(nIncidente.getIdServicio());
-                        System.out.println("Seleccione el tecnico");
+                        System.out.println("Seleccione el técnico");
                         nTecnico.setLegajo(String.valueOf(MiScanner.leerInt()));
                         nTecnico.recuperar();
-                        System.out.println("Tecnico seleccionado: " +nTecnico.toString());
+                        System.out.println("Técnico seleccionado: " +nTecnico.toString());
                         nIncidente.setLegajoTecnico(nTecnico.getLegajo());
                         System.out.println("Fecha y hora actual: "+ LocalDateTime.now());
                         System.out.println("Horas requeridas por tabla: "+nIncidente.getProblema().getETR());
                         System.out.println("Horas agregadas en llamado: "+ nIncidente.getHsComplejidad());
                         nIncidente.tiempoEstimadoResolucion();
                         int numeroIncidente= nIncidente.crearIncidente();
-                        if (numeroIncidente!=0) System.out.println("Incidente creado con exito, numero de ticket: > "+ numeroIncidente+ " <\n");
+                        if (numeroIncidente!=0) System.out.println("Incidente creado con éxito, numero de ticket: > "+ numeroIncidente+ " <\n");
                     }
                     System.out.println("¿Desea cargar asignar un ticket padre?  S-Si N-No");
                     char sino = MiScanner.leerCaracter(new char[]{'S','s', 'N','n'});
@@ -261,9 +261,9 @@ public class Ticketera {
                 switch (decision) {
                     case '1': {
                         Cliente clienteNuevo = new Cliente();
-                        System.out.println("Ingresar CUIT (Solo numeros, sin -)");
+                        System.out.println("Ingresar CUIT (Solo números, sin -)");
                         clienteNuevo.setCUIT(MiScanner.leerTexto());
-                        System.out.println("Ingresar Razon Social");
+                        System.out.println("Ingresar Razón Social");
                         clienteNuevo.setRazonSocial(MiScanner.leerTexto());
                         System.out.println("Ingresar eMail de contacto: ");
                         clienteNuevo.setMailContacto(MiScanner.leerTexto());
@@ -279,7 +279,7 @@ public class Ticketera {
                     }
                     case '2': {
                         Cliente clienteNuevo = new Cliente();
-                        System.out.println("Ingresar CUIT (Solo numeros, sin -)");
+                        System.out.println("Ingresar CUIT (Solo números, sin -)");
                         clienteNuevo.setCUIT(MiScanner.leerTexto());
                         clienteNuevo.recuperar();
                         System.out.println(clienteNuevo.toString());
@@ -293,7 +293,7 @@ public class Ticketera {
                     }
                     case '3': {
                         Cliente clienteNuevo = new Cliente();
-                        System.out.println("Ingresar CUIT (Solo numeros, sin -)");
+                        System.out.println("Ingresar CUIT (Solo números, sin -)");
                         clienteNuevo.setCUIT(MiScanner.leerTexto());
                         clienteNuevo.recuperar();
                         System.out.println(clienteNuevo.toString());
@@ -302,7 +302,7 @@ public class Ticketera {
                         if (sino == 'S' || sino=='s') {
                             clienteNuevo.setMailContacto(MiScanner.leerTexto());
                         }
-                        System.out.println("¿Desea cambiar la Razon Social?  S-Si N-No");
+                        System.out.println("¿Desea cambiar la Razón Social?  S-Si N-No");
                         sino = MiScanner.leerCaracter(new char[]{'S','s', 'N','n'});
                         if (sino == 'S' || sino=='s') {
                             clienteNuevo.setRazonSocial(MiScanner.leerTexto());
@@ -319,7 +319,7 @@ public class Ticketera {
                     }
                     case '4': {
                         Cliente cliente = new Cliente();
-                        System.out.println("Ingresar CUIT (Solo numeros, sin -)");
+                        System.out.println("Ingresar CUIT (Solo números, sin -)");
                         cliente.setCUIT(MiScanner.leerTexto());
                         cliente.recuperar();
                         System.out.println(cliente.toString() +"\n");
@@ -328,12 +328,12 @@ public class Ticketera {
                         if (sino == 'S' || sino=='s') {
                             //listo todas las especialidades
                             System.out.println("Servicios actuales");
-                            ServicioEspacialidad.obtenerServiciosActivosCliente(cliente.getCUIT()).stream().forEach((dato) -> System.out.println("Seleccion: " + dato.getIndex() + " Servicio: " + dato.getNombre()));
+                            ServicioEspacialidad.obtenerServiciosActivosCliente(cliente.getCUIT()).stream().forEach((dato) -> System.out.println("Selección: " + dato.getIndex() + " Servicio: " + dato.getNombre()));
                             System.out.println();
                             boolean continuar = true;
                             while (continuar) {
                                 System.out.println("Servicios disponibles");
-                                ServicioEspacialidad.obtenerServiciosActivos().stream().filter((dato)-> !cliente.tieneServicio(dato)).forEach((dato)-> System.out.println("Seleccion: " + dato.getIndex() + " Servicio: " + dato.getNombre()));
+                                ServicioEspacialidad.obtenerServiciosActivos().stream().filter((dato)-> !cliente.tieneServicio(dato)).forEach((dato)-> System.out.println("Selección: " + dato.getIndex() + " Servicio: " + dato.getNombre()));
 
                                 int seleccion =  MiScanner.leerInt();
                                 cliente.agregarServicio(new ServicioEspacialidad(ServicioEspacialidad.obtenerServiciosActivos().stream().filter((dato)-> dato.getIndex()==seleccion).findFirst().get()));
@@ -342,18 +342,18 @@ public class Ticketera {
                                 if (sino2 == 'n' || sino2 == 'N' ) continuar = false;
                             }
                             cliente.actualizar();
-                            System.out.println("Edicion completada");
+                            System.out.println("Edición completada");
                         }
                         System.out.println("Desea eliminar servicios al cliente: S-Si N-No");
                         sino = MiScanner.leerCaracter(new char[]{'S','s', 'N','n'});
                         if (sino == 'S' || sino=='s') {
                             //listo todas las especialidades
                             System.out.println("Servicios actuales");
-                            ServicioEspacialidad.obtenerServiciosActivosCliente(cliente.getCUIT()).stream().forEach((dato) -> System.out.println("Seleccion: " + dato.getIndex() + " Servicio: " + dato.getNombre()));
+                            ServicioEspacialidad.obtenerServiciosActivosCliente(cliente.getCUIT()).stream().forEach((dato) -> System.out.println("Selección: " + dato.getIndex() + " Servicio: " + dato.getNombre()));
                             System.out.println();
                             boolean continuar = true;
                             while (continuar) {
-                                System.out.println("Elejir servicio a elminar: ");
+                                System.out.println("Elegir servicio a eliminar: ");
                                 int seleccion = MiScanner.leerInt();
                                 cliente.elimnarServicio(new ServicioEspacialidad(ServicioEspacialidad.obtenerServiciosActivos().stream().filter((dato) -> dato.getIndex() == seleccion).findFirst().get()));
                                 System.out.println("¿Desea eliminar otra especialidad?  S-Si N-No");
@@ -361,7 +361,7 @@ public class Ticketera {
                                 if (sino2 == 'n' || sino2 == 'N') continuar = false;
                             }
                             cliente.actualizar();
-                            System.out.println("Edicion completada");
+                            System.out.println("Edición completada");
                         }
                         break;
                     }
@@ -370,7 +370,7 @@ public class Ticketera {
                         System.out.println("Ingresar nombre del servicio: ");
                         unServicio.setNombre(MiScanner.leerTexto());
                         unServicio.persistir();
-                        System.out.println("Servicio Agregado con exito");
+                        System.out.println("Servicio Agregado con éxito");
                         break;
                     }
                 }
@@ -387,7 +387,7 @@ public class Ticketera {
                 System.out.println("¿Que desea realizar? ");
                 System.out.println("1. Resolver un ticket");
                 System.out.println("2. Cambiar ETR");
-                System.out.println("3. Modificar metodo de contacto preferido");
+                System.out.println("3. Modificar método de contacto preferido");
 
                 int eleccion = MiScanner.leerInt();
                 switch (eleccion){
@@ -400,7 +400,7 @@ public class Ticketera {
                             nTecnico.getIncidentesAbiertos().stream().filter((caso)->caso.getNumeroINC()==op).findFirst().get().setInformacionCierre(MiScanner.leerTexto());
                             nTecnico.getIncidentesAbiertos().stream().filter((caso)->caso.getNumeroINC()==op).findFirst().get().setEstado(EstadoIncidente.RESUELTO);
                             nTecnico.cerrarIncidente(op);
-                            System.out.println("Se cerro el ticket "+ op + " con exito");
+                            System.out.println("Se cerro el ticket "+ op + " con éxito");
                         } else System.out.println("Dato ingresado incorrecto, no se encontró un ticket ");
 
                         break;
@@ -416,7 +416,7 @@ public class Ticketera {
                             if (hsadic_mod < nTecnico.getIncidentesAbiertos().stream().filter((caso)->caso.getNumeroINC()==op).findFirst().get().getHsComplejidad()) {
                                 nTecnico.getIncidentesAbiertos().stream().filter((caso)->caso.getNumeroINC()==op).findFirst().get().setHsComplejidad(hsadic_mod);
                                 nTecnico.actualizarIncidente(op);
-                                System.out.println("Se modifico el ticket con exito");
+                                System.out.println("Se modifico el ticket con éxito");
                             }
                             else System.out.println("La cantidad de horas ingresadas es igual o mayor que el valor actual. No se realizan cambios");
 
@@ -425,13 +425,13 @@ public class Ticketera {
 
                         break;
                     case 3:
-                        System.out.println("Su metodo de contacto actual es:");
+                        System.out.println("Su método de contacto actual es:");
                         System.out.println(nTecnico.getTipoPreferido().toString());
-                        System.out.println("Seleccione su nuevo metodo de envio:");
+                        System.out.println("Seleccione su nuevo método de envío:");
                         TipoContacto contactos[] = TipoContacto.values();
                         final int[] i = {1};
                         Arrays.stream(contactos).forEach((item)-> {
-                            System.out.println("Opcion "+ i[0] + " - Tipo de contacto: "+item);
+                            System.out.println("Opción "+ i[0] + " - Tipo de contacto: "+item);
                             i[0]++;
                         });
                         op=MiScanner.leerCaracter(new char[]{'1','2','3'})-'0';
