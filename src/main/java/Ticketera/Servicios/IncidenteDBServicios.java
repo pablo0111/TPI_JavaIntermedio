@@ -128,7 +128,8 @@ public class IncidenteDBServicios extends BaseDeDatosServicios{
             st.setLong (3, persistencia.getParentINC());
             st.setInt(4, persistencia.getProblema().getId());
             st.setInt(5, persistencia.getHsComplejidad());
-            st.setDate(6, java.sql.Date.valueOf(persistencia.getFechacreacion().toLocalDate())); //**//**//**//**//**//**//***/*/*/*/*//*/
+            st.setObject(6, Timestamp.valueOf(persistencia.getFechacreacion()));
+            //st.setDate(6, java.sql.Date.valueOf(persistencia.getFechacreacion().toLocalDate())); //**//**//**//**//**//**//***/*/*/*/*//*/
             st.setString(7, persistencia.getDescripcion());
             st.setString(8, persistencia.getInformacionCierre());
             st.setInt(9,persistencia.getEstado().ordinal()+1);

@@ -2,6 +2,7 @@ package Ticketera;
 
 import Ticketera.Entidades.*;
 import Ticketera.Servicios.MiScanner;
+import Ticketera.Servicios.Reportes;
 import Ticketera.Servicios.Ticketera;
 
 
@@ -11,7 +12,8 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Bienvenido a la Ticketera");
 
-    if (args.length==0) {
+
+        if (args.length==0) {
         System.out.println("Modo administrador");
         System.out.println("Desea ser:");
         System.out.println("1. RRHH");

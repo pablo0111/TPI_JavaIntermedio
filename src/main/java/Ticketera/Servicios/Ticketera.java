@@ -121,7 +121,11 @@ public class Ticketera {
                         break;
                     }
                     case '4': {
-
+                        try {
+                           Reportes.incidentesAsignadosPorTecnico().stream().forEach((linea)-> System.out.println(linea));
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
                         break;
                     }
                 }
